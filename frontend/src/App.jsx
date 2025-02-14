@@ -9,6 +9,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
 import BusYard from "./components/BusYard";
+import Home from "./components/HomePage";
 import "./App.css";
 
 function App() {
@@ -32,48 +33,44 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/busyard" />
-            ) : (
-              <Login setIsAuthenticated={setIsAuthenticated} />
-            )
-          }
-        />
-        <Route
-          path="/register"
-          element={isAuthenticated ? <Navigate to="/busyard" /> : <Register />}
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/busyard"
-          element={
-            <PrivateRoute>
-              <BusYard />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/busyard" />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-      </Routes>
+      <div className="App">
+        <Routes>
+          <Route
+            path="/"
+            element={isAuthenticated ? <Navigate to="/busyard" /> : <Home />}
+          />
+          <Route
+            path="/login"
+            element={
+              isAuthenticated ? (
+                <Navigate to="/busyard" />
+              ) : (
+                <Login setIsAuthenticated={setIsAuthenticated} />
+              )
+            }
+          />
+          <Route
+            path="/register"
+            element={isAuthenticated ? <Navigate to="/busyard" /> : <Register />}
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/busyard"
+            element={
+              <PrivateRoute>
+                <BusYard />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </div>
     </Router>
   );
 }

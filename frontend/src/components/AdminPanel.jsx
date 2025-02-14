@@ -5,6 +5,34 @@ const AdminPanel = ({ buses, onUpdateBus }) => {
   const [selectedBus, setSelectedBus] = useState(null);
   const [newDestination, setNewDestination] = useState("");
 
+  const destinations = [
+    "Mandi",
+    "CB Ganj",
+    "Kudeshiya",
+    "Kargaina",
+    "Greenpark",
+    "100 Futta",
+    "Ayub khan",
+    "Mahanagar",
+    "84 Ghanta",
+    "Koharapeer",
+    "Prem Nagar",
+    "Airforce",
+    "Hartman",
+    "Vipin Hospital",
+    "Qila Mazar",
+    "Railway junction",
+    "Sadar",
+    "Karamchari Nagar",
+    "Lal Fatak",
+    "Sanjay Nagar",
+    "Kk hospital",
+    "Dharamkanta",
+    "Selection Point",
+    "City Station",
+    "Green Park"
+  ];
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (selectedBus && newDestination) {
@@ -22,6 +50,7 @@ const AdminPanel = ({ buses, onUpdateBus }) => {
           value={selectedBus || ""}
           onChange={(e) => setSelectedBus(e.target.value)}
           required
+          className="bus-select"
         >
           <option value="">Select Bus</option>
           {buses.map((bus) => (
@@ -30,14 +59,20 @@ const AdminPanel = ({ buses, onUpdateBus }) => {
             </option>
           ))}
         </select>
-        <input
-          type="text"
-          placeholder="New Destination"
+        <select
           value={newDestination}
           onChange={(e) => setNewDestination(e.target.value)}
           required
-        />
-        <button type="submit">Update Destination</button>
+          className="destination-select"
+        >
+          <option value="">Select Destination</option>
+          {destinations.map((destination, index) => (
+            <option key={index} value={destination}>
+              {destination}
+            </option>
+          ))}
+        </select>
+        <button type="submit" className="update-button">Update Destination</button>
       </form>
     </div>
   );
