@@ -28,7 +28,7 @@ function App() {
     if (loading) {
       return <div>Loading...</div>;
     }
-    return isAuthenticated ? children : <Navigate to="/login" />;
+    return isAuthenticated ? children : <Navigate to="/" />;
   };
 
   return (

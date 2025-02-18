@@ -56,7 +56,7 @@ const BusYard = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userRole");
-    navigate("/login");
+    navigate("/");
     window.location.reload();
   };
 
