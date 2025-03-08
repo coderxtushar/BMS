@@ -2,43 +2,59 @@ import { useState } from "react";
 import "./AdminPanel.css";
 
 const AdminPanel = ({ buses, onUpdateBus }) => {
-  const [selectedBus, setSelectedBus] = useState(null);
-  const [newDestination, setNewDestination] = useState("");
+  const [selectedBusNumber, setSelectedBusNumber] = useState("");
+  const [selectedBlock, setSelectedBlock] = useState("");
+  const [destination, setDestination] = useState("");
 
-  const destinations = [
-    "Mandi",
-    "CB Ganj",
-    "Kudeshiya",
-    "Kargaina",
-    "Greenpark",
-    "100 Futta",
-    "Ayub khan",
-    "Mahanagar",
-    "84 Ghanta",
-    "Koharapeer",
-    "Prem Nagar",
-    "Airforce",
-    "Hartman",
-    "Vipin Hospital",
-    "Qila Mazar",
-    "Railway junction",
-    "Sadar",
-    "Karamchari Nagar",
-    "Lal Fatak",
-    "Sanjay Nagar",
-    "Kk hospital",
-    "Dharamkanta",
-    "Selection Point",
-    "City Station",
-    "Green Park"
-  ];
+  // All possible blocks (A through L)
+  const allBlocks = Array.from("ABCDEFGHIJKL");
 
-  const handleSubmit = (e) => {
+  // All possible bus numbers (B101 through B124)
+  const allBusNumbers = Array.from({ length: 24 }, (_, i) => `B${101 + i}`);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (selectedBus && newDestination) {
-      onUpdateBus(selectedBus, newDestination);
-      setNewDestination("");
-      setSelectedBus(null);
+    if (selectedBusNumber && selectedBlock) {
+      try {
+        const updateData = {
+          busNumber: selectedBusNumber,
+          block: selectedBlock,
+          destination: destination,
+        };
+
+        console.log("Sending update request:", updateData);
+
+        const response = await fetch("http://localhost:5000/api/buses/update", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updateData),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Failed to update bus");
+        }
+
+        const data = await response.json();
+        console.log("Update successful:", data);
+        onUpdateBus(data);
+
+        // Reset form
+        setSelectedBusNumber("");
+        setSelectedBlock("");
+        setDestination("");
+      } catch (error) {
+        console.error("Error updating bus:", error);
+        if (error.message === "Failed to execute 'json' on 'Response': Unexpected end of JSON input") {
+          alert("Server error: No response received");
+        } else {
+          alert(`Failed to update bus: ${error.message}`);
+        }
+      }
+    } else {
+      alert("Please select both a bus number and a block");
     }
   };
 
@@ -46,33 +62,43 @@ const AdminPanel = ({ buses, onUpdateBus }) => {
     <div className="admin-panel">
       <h3>Admin Controls</h3>
       <form onSubmit={handleSubmit}>
+        {/* Block Selection */}
         <select
-          value={selectedBus || ""}
-          onChange={(e) => setSelectedBus(e.target.value)}
+          value={selectedBlock}
+          onChange={(e) => setSelectedBlock(e.target.value)}
           required
-          className="bus-select"
         >
-          <option value="">Select Bus</option>
-          {buses.map((bus) => (
-            <option key={bus.id} value={bus.id}>
-              {`Bus ${bus.busNumber} - Block ${bus.block}`}
+          <option value="">Select Block</option>
+          {allBlocks.map((block) => (
+            <option key={block} value={block}>
+              Block {block}
             </option>
           ))}
         </select>
+
+        {/* Bus Number Selection */}
         <select
-          value={newDestination}
-          onChange={(e) => setNewDestination(e.target.value)}
+          value={selectedBusNumber}
+          onChange={(e) => setSelectedBusNumber(e.target.value)}
           required
-          className="destination-select"
         >
-          <option value="">Select Destination</option>
-          {destinations.map((destination, index) => (
-            <option key={index} value={destination}>
-              {destination}
+          <option value="">Select Bus Number</option>
+          {allBusNumbers.map((busNumber) => (
+            <option key={busNumber} value={busNumber}>
+              {busNumber}
             </option>
           ))}
         </select>
-        <button type="submit" className="update-button">Update Destination</button>
+
+        {/* Destination Input */}
+        <input
+          type="text"
+          placeholder="Enter Destination"
+          value={destination}
+          onChange={(e) => setDestination(e.target.value)}
+          required
+        />
+        <button type="submit">Update Bus</button>
       </form>
     </div>
   );

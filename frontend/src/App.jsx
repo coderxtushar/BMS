@@ -10,6 +10,7 @@ import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
 import BusYard from "./components/BusYard";
 import Home from "./components/HomePage";
+import ProtectedRoute from "./components/projectedRoute";
 import "./App.css";
 
 function App() {

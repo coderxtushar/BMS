@@ -6,94 +6,137 @@ import "./BusYard.css";
 const BusYard = () => {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
-  const [buses, setBuses] = useState([
-    // Block A
-    { id: 1, busNumber: "B101", destination: "", block: "A" },
-    { id: 2, busNumber: "B102", destination: "", block: "A" },
-    // Block B
-    { id: 3, busNumber: "B103", destination: "", block: "B" },
-    { id: 4, busNumber: "B104", destination: "", block: "B" },
-    // Block C
-    { id: 5, busNumber: "B105", destination: "", block: "C" },
-    { id: 6, busNumber: "B106", destination: "", block: "C" },
-    // Block D
-    { id: 7, busNumber: "B107", destination: "", block: "D" },
-    { id: 8, busNumber: "B108", destination: "", block: "D" },
-    // Block E
-    { id: 9, busNumber: "B109", destination: "", block: "E" },
-    { id: 10, busNumber: "B110", destination: "", block: "E" },
-    // Block F
-    { id: 11, busNumber: "B111", destination: "", block: "F" },
-    { id: 12, busNumber: "B112", destination: "", block: "F" },
-    // Block G
-    { id: 13, busNumber: "B113", destination: "", block: "G" },
-    { id: 14, busNumber: "B114", destination: "", block: "G" },
-    // Block H
-    { id: 15, busNumber: "B115", destination: "", block: "H" },
-    { id: 16, busNumber: "B116", destination: "", block: "H" },
-    // Block I
-    { id: 17, busNumber: "B117", destination: "", block: "I" },
-    { id: 18, busNumber: "B118", destination: "", block: "I" },
-    // Block J
-    { id: 19, busNumber: "B119", destination: "", block: "J" },
-    { id: 20, busNumber: "B120", destination: "", block: "J" },
-    // Block K
-    { id: 21, busNumber: "B121", destination: "", block: "K" },
-    { id: 22, busNumber: "B122", destination: "", block: "K" },
-    // Block L
-    { id: 23, busNumber: "B123", destination: "", block: "L" },
-    { id: 24, busNumber: "B124", destination: "", block: "L" },
-  ]);
-
+  const [buses, setBuses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Initialize with empty buses for all blocks
   useEffect(() => {
-    // Check if user is admin (you might want to get this from your backend)
+    const initializeBuses = async () => {
+      try {
+        console.log("Fetching buses...");
+        const response = await fetch("/api/buses/all");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch buses");
+        }
+
+        const data = await response.json();
+        console.log("Fetched buses:", data);
+        setBuses(data);
+      } catch (error) {
+        console.error("Error fetching buses:", error);
+        // Initialize with empty state if fetch fails
+        const defaultBuses = Array.from("ABCDEFGHIJKL").flatMap((block) => ({
+          busNumber: "",
+          destination: "",
+          block: block,
+        }));
+        setBuses(defaultBuses);
+      }
+    };
+
+    // Check if user is admin
     const userRole = localStorage.getItem("userRole");
     setIsAdmin(userRole === "admin");
+
+    initializeBuses();
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userRole");
-    navigate("/");
-    window.location.reload();
+    try {
+      // Clear all authentication-related data
+      localStorage.removeItem("token");
+      localStorage.removeItem("userRole");
+      sessionStorage.clear();
+
+      // Reset component state
+      setIsAdmin(false);
+      setBuses([]);
+      setSearchTerm("");
+
+      // Navigate to login page
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.error("Error during logout:", error);
+      alert("Failed to logout properly. Please try again.");
+    }
   };
 
-  const handleUpdateBus = (busId, newDestination) => {
-    setBuses((prevBuses) =>
-      prevBuses.map((bus) =>
-        bus.id === parseInt(busId)
-          ? { ...bus, destination: newDestination }
-          : bus
-      )
-    );
+  const handleUpdateBus = (updatedBus) => {
+    setBuses((prevBuses) => {
+      // Create a new array with the updated bus information
+      const newBuses = [...prevBuses];
+
+      // Find and update the bus in its new block
+      const existingBusIndex = newBuses.findIndex(
+        (bus) => bus.busNumber === updatedBus.busNumber
+      );
+
+      if (existingBusIndex !== -1) {
+        // Update existing bus
+        newBuses[existingBusIndex] = updatedBus;
+      } else {
+        // Add new bus
+        newBuses.push(updatedBus);
+      }
+
+      return newBuses;
+    });
+  };
+
+  const handleRemoveBus = async (busNumber) => {
+    try {
+      console.log("Attempting to remove bus:", busNumber);
+
+      const response = await fetch(`/api/buses/remove`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ busNumber }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to remove bus");
+      }
+
+      const data = await response.json();
+      console.log("Remove response:", data);
+
+      // Update local state only after successful removal
+      setBuses((prevBuses) =>
+        prevBuses.filter((bus) => bus.busNumber !== busNumber)
+      );
+    } catch (error) {
+      console.error("Error removing bus:", error);
+      alert("Failed to remove bus: " + error.message);
+    }
   };
 
   // Group buses by block
-  const busBlocks = buses.reduce((acc, bus) => {
-    if (!acc[bus.block]) {
-      acc[bus.block] = [];
-    }
-    acc[bus.block].push(bus);
+  const busBlocks = Array.from("ABCDEFGHIJKL").reduce((acc, block) => {
+    acc[block] = buses.filter((bus) => bus.block === block).slice(0, 3); // Limit to 3 buses per block
     return acc;
   }, {});
 
-  // Filter buses based on search
-  const filteredBlocks = Object.entries(busBlocks).filter(([block, buses]) =>
-    buses.some(
-      (bus) =>
-        bus.busNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        bus.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        block.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+  // Filter blocks based on search
+  const filteredBlocks = Object.entries(busBlocks).filter(
+    ([block, blockBuses]) =>
+      searchTerm === "" ||
+      block.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      blockBuses.some(
+        (bus) =>
+          bus.busNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          bus.destination?.toLowerCase().includes(searchTerm.toLowerCase())
+      )
   );
 
   return (
     <div className="bus-yard">
       <div className="header">
         <h2>Bus Yard</h2>
-        <button onClick={handleLogout} className="logout-button">
+        <button onClick={handleLogout} className="logout-button" title="Logout">
           Logout
         </button>
       </div>
@@ -111,24 +154,38 @@ const BusYard = () => {
       </div>
 
       <div className="blocks-container">
-        {filteredBlocks.map(([block, buses]) => (
+        {filteredBlocks.map(([block, blockBuses]) => (
           <div key={block} className="block">
             <h3>Block {block}</h3>
             <div className="buses">
-              {buses.map((bus) => (
-                <div key={bus.id} className="bus-card">
-                  <div className="bus-number">{bus.busNumber}</div>
-                  <div className="bus-destination">
-                    {bus.destination || "No destination set"}
+              {blockBuses.map((bus) =>
+                bus.busNumber ? (
+                  <div key={bus.busNumber} className="bus-card">
+                    {isAdmin && (
+                      <button
+                        className="remove-bus-btn"
+                        onClick={() => handleRemoveBus(bus.busNumber)}
+                        title="Remove bus"
+                      >
+                        ×
+                      </button>
+                    )}
+                    <div className="bus-number">{bus.busNumber}</div>
+                    <div className="bus-destination">
+                      {bus.destination || "No destination set"}
+                    </div>
+                    <div className="block-label">Block {block}</div>
                   </div>
-                  <div className="block-label">Block {block}</div>
-                </div>
-              ))}
-              {buses.length < 2 && (
-                <div className="bus-card empty">
-                  <p>Empty Spot</p>
-                </div>
+                ) : null
               )}
+              {blockBuses.length < 3 &&
+                Array.from({ length: 3 - blockBuses.length }).map(
+                  (_, index) => (
+                    <div key={`empty-${index}`} className="bus-card empty">
+                      <p>Empty Spot</p>
+                    </div>
+                  )
+                )}
             </div>
           </div>
         ))}
