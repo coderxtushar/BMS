@@ -54,8 +54,8 @@ const BusYard = () => {
       setBuses([]);
       setSearchTerm("");
 
-      // Navigate to login page
-      navigate("/login", { replace: true });
+      // Navigate to Home page
+      navigate("/", { replace: true });
     } catch (error) {
       console.error("Error during logout:", error);
       alert("Failed to logout properly. Please try again.");

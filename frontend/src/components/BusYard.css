@@ -142,7 +142,8 @@ html {
   margin-top: 5px;
 }
 
-.logout-button {
+.logout-button, 
+.update-button {
   padding: 8px 16px;
   background-color: #dc3545;
   color: white;
@@ -150,14 +151,75 @@ html {
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 80px; /* Reduced from 100px */
+  max-width: 120px; /* Added max-width */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.update-button {
+  background-color: #007bff;
+  width: fit-content; /* Adjust width to content */
+  min-width: 60px; /* Smaller min-width for update button */
 }
 
 .logout-button:hover {
   background-color: #c82333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.update-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.logout-button:active,
+.update-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive Design */
+@media (prefers-color-scheme: dark) {
+  .logout-button, 
+  .update-button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    min-width: 60px; /* Further reduced for mobile */
+    max-width: 100px;
+    background-color: #dc3545;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .update-button {
+    background-color: #0056b3;
+  }
+
+  .logout-button:hover {
+    background-color: #bd2130;
+  }
+
+  .update-button:hover {
+    background-color: #004494;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .logout-button, 
+  .update-button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    min-width: 80px;
+  }
+}
+
 @media screen and (min-width: 2000px) {
   .blocks-container {
     grid-template-columns: repeat(6, 1fr);

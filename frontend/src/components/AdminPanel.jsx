@@ -6,11 +6,122 @@ const AdminPanel = ({ buses, onUpdateBus }) => {
   const [selectedBlock, setSelectedBlock] = useState("");
   const [destination, setDestination] = useState("");
 
-  // All possible blocks (A through L)
-  const allBlocks = Array.from("ABCDEFGHIJKL");
-
+  // All possible blocks (A through T2)
+  const allBlocks = [
+    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", 
+    "M", "N", "O", "P", "Q", "R", "S", "T1", "T2"
+  ];
   // All possible bus numbers (B101 through B124)
-  const allBusNumbers = Array.from({ length: 24 }, (_, i) => `B${101 + i}`);
+  // const allBusNumbers = Array.from({ length: 24 }, (_, i) => `B${101 + i}`);
+
+  // All bus numbers with their blocks
+  const allBusNumbers = [
+    // Block A
+    { busNumber: "8748", block: "A" },
+    { busNumber: "8795", block: "A" },
+    // Block B
+    { busNumber: "8707", block: "B" },
+    { busNumber: "2377", block: "B" },
+    // Block C
+    { busNumber: "2375", block: "C" },
+    { busNumber: "8219", block: "C" },
+    // Block D
+    { busNumber: "2376", block: "D" },
+    { busNumber: "8712", block: "D" },
+    // Block E
+    { busNumber: "7647", block: "E" },
+    { busNumber: "1543", block: "E" },
+    // Block F
+    { busNumber: "7646", block: "F" },
+    { busNumber: "2373", block: "F" },
+    // Block G
+    { busNumber: "8711", block: "G" },
+    { busNumber: "7634", block: "G" },
+    // Block H
+    { busNumber: "2372", block: "H" },
+    { busNumber: "8713", block: "H" },
+    // Block I
+    { busNumber: "8704", block: "I" },
+    { busNumber: "8701", block: "I" },
+    // Block J
+    { busNumber: "9452", block: "J" },
+    { busNumber: "8746", block: "J" },
+    // Block K
+    { busNumber: "9949", block: "K" },
+    { busNumber: "8824", block: "K" },
+    // Block L
+    { busNumber: "8220", block: "L" },
+    { busNumber: "8709", block: "L" },
+    // Block M
+    { busNumber: "8221", block: "M" },
+    { busNumber: "8699", block: "M" },
+    { busNumber: "8747", block: "M" },
+    // Block N
+    { busNumber: "8708", block: "N" },
+    { busNumber: "9453", block: "N" },
+    // Block O
+    { busNumber: "7589", block: "O" },
+    { busNumber: "8692", block: "O" },
+    { busNumber: "8702", block: "O" },
+    { busNumber: "7590", block: "O" },
+    // Block P
+    { busNumber: "7586", block: "P" },
+    { busNumber: "8128", block: "P" },
+    { busNumber: "8703", block: "P" },
+    { busNumber: "7588", block: "P" },
+    // Block Q
+    { busNumber: "8127", block: "Q" },
+    { busNumber: "8129", block: "Q" },
+    { busNumber: "2250", block: "Q" },
+    // Block R
+    { busNumber: "8126", block: "R" },
+    { busNumber: "8715", block: "R" },
+    { busNumber: "8125", block: "R" },
+    // Block S
+    { busNumber: "2538", block: "S" },
+    { busNumber: "8698", block: "S" },
+    // Block T1
+    { busNumber: "8690", block: "T1" },
+    { busNumber: "8697", block: "T1" },
+    { busNumber: "8691", block: "T1" },
+    { busNumber: "8693", block: "T1" },
+    { busNumber: "8695", block: "T1" },
+    // Block T2
+    { busNumber: "8696", block: "T2" },
+    { busNumber: "8796", block: "T2" },
+    { busNumber: "7587", block: "T2" },
+    { busNumber: "2374", block: "T2" },
+  ];
+
+
+  // Destination List
+  const destinations = [
+    "Mandi",
+    "CB Ganj",
+    "Kudeshiya",
+    "Kargaina",
+    "Greenpark",
+    "100 Futta",
+    "Ayub khan",
+    "Mahanagar",
+    "84 Ghanta",
+    "Koharapeer",
+    "Prem Nagar",
+    "Airforce",
+    "Hartman",
+    "Vipin Hospital",
+    "Qila Mazar",
+    "Railway junction",
+    "Sadar",
+    "Karamchari Nagar",
+    "Lal Fatak",
+    "Sanjay Nagar",
+    "Kk hospital",
+    "Dharamkanta",
+    "Selection Point",
+    "City Station",
+    "Green Park"
+  ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,21 +194,29 @@ const AdminPanel = ({ buses, onUpdateBus }) => {
           required
         >
           <option value="">Select Bus Number</option>
-          {allBusNumbers.map((busNumber) => (
-            <option key={busNumber} value={busNumber}>
-              {busNumber}
+          {allBusNumbers
+            .filter((bus) => !selectedBlock || bus.block === selectedBlock)
+            .map((bus) => (
+              <option key={bus.busNumber} value={bus.busNumber}>
+                {bus.busNumber}
+              </option>
+            ))}
+        </select>
+
+        {/* Destination Dropdown */}
+        <select
+          value={destination}
+          onChange={(e) => setDestination(e.target.value)}
+          required
+        >
+          <option value="">Select Destination</option>
+          {destinations.map((dest) => (
+            <option key={dest} value={dest}>
+              {dest}
             </option>
           ))}
         </select>
 
-        {/* Destination Input */}
-        <input
-          type="text"
-          placeholder="Enter Destination"
-          value={destination}
-          onChange={(e) => setDestination(e.target.value)}
-          required
-        />
         <button type="submit">Update Bus</button>
       </form>
     </div>

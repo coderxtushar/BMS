@@ -1,0 +1,118 @@
+.login-page {
+    background: url('../assets/bg2.jpg') no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Align to the right */
+    padding-right: 150px; /* Add padding to the right */
+  }
+  
+  .login-box {
+    background: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 350px; /* Set a max-width */
+    text-align: center;
+    position: relative;
+  }
+  
+  .login-box h2 {
+    background: red;
+    color: white;
+    margin: -20px -20px 20px;
+    padding: 15px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: transparent; /* Fully transparent background */
+    color: black; /* Content text color */
+    caret-color: black; /* Cursor color */
+  }
+  
+  input::placeholder {
+    color: black; /* Placeholder text color */
+  }
+  
+  button {
+    width: 50%; /* Reduced width */
+    padding: 10px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto; /* Center the button */
+  }
+  
+  button:disabled {
+    background: gray;
+    cursor: not-allowed;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  p a {
+    color: blue;
+    text-decoration: none;
+  }
+  
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.05); /* Even more transparent background */
+    color: rgba(255, 255, 255, 0.5); /* Semi-transparent text */
+    text-align: center;
+    padding: 0.5px; /* Minimal padding */
+    font-size: 4px; /* Smaller font size */
+    line-height: 1; /* Reduced line height */
+    letter-spacing: 0.2px; /* Slightly increased letter spacing for readability */
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .login-page {
+      justify-content: center; 
+      padding-right: 20px; 
+    }
+  
+    .login-box {
+      width: 100%;
+      max-width: 300px; 
+    }
+  
+    .footer {
+      font-size: 3px; 
+      padding: 0.25px; 
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .login-box {
+      max-width: 250px; 
+    }
+  
+    button {
+      width: 70%; 
+    }
+  }

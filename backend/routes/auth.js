@@ -9,11 +9,11 @@ router.post("/register", async (req, res) => {
   try {
     console.log("Received registration request:", req.body); // Debug log
 
-    const { email, password } = req.body;
+    const { email, password, studentId, courseName } = req.body;
 
-    if (!email || !password) {
+    if (!email || !password || !studentId || !courseName) {
       return res.status(400).json({
-        message: "Please provide both email and password",
+        message: "Please provide email, password, student ID, and course name",
       });
     }
 
@@ -29,6 +29,8 @@ router.post("/register", async (req, res) => {
     const user = new User({
       email,
       password,
+      studentId,
+      courseName,
     });
 
     console.log("Attempting to save user:", user); // Debug log
@@ -47,6 +49,8 @@ router.post("/register", async (req, res) => {
       user: {
         id: user._id,
         email: user.email,
+        studentId: user.studentId,
+        courseName: user.courseName,
       },
     });
   } catch (error) {
@@ -105,6 +109,8 @@ router.post("/login", async (req, res) => {
         id: user._id,
         email: user.email,
         role: user.role,
+        studentId: user.studentId,
+        courseName: user.courseName,
       },
     });
   } catch (error) {
