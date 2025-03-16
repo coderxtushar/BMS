@@ -134,12 +134,14 @@ const BusYard = () => {
 
   return (
     <div className="bus-yard">
-      <div className="header">
-        <h2>Bus Yard</h2>
+    <div className="header">
+      <h2>Bus Yard</h2>
+      <div className="header-buttons">
         <button onClick={handleLogout} className="logout-button" title="Logout">
           Logout
         </button>
       </div>
+    </div>
 
       {isAdmin && <AdminPanel buses={buses} onUpdateBus={handleUpdateBus} />}
 

@@ -75,7 +75,7 @@ function Login({ setIsAuthenticated }) {
       </div>
 
       <div className="footer">
-        ©2025 Invertis University, Invertis Village, Bareilly-Lucknow National
+        ©2025 Invertis University, Bareilly-Lucknow National
         Highway, NH-24, Bareilly-243123, Uttar Pradesh
       </div>
     </div>

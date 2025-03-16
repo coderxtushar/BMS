@@ -14,6 +14,7 @@ html {
   overflow-x: hidden;
 }
 
+/* Main Container */
 .bus-yard {
   min-height: 100vh;
   width: 100vw;
@@ -28,16 +29,70 @@ html {
   bottom: 0;
 }
 
+/* Header Styles */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.9);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 100;
+}
+
+/* Button Container for Header */
+.header-buttons {
+  display: flex;
+  gap: 10px;
+  margin-left: auto; /* Push buttons to the right */
+}
+
+/* Common Button Styles */
+.logout-button,
+.update-button {
+  padding: 6px 12px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.logout-button {
+  background-color: #dc3545;
+  min-width: 70px;
+  height: 32px;
+}
+
+.update-button {
+  background-color: #007bff;
+  min-width: 25px; 
+  max-width: 60px;
+  height: 32px;
+  padding: 6px 8px; 
+  white-space: nowrap;
+  font-size: 0.8rem;
+}
+
+.logout-button:hover,
+.update-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.logout-button:hover {
+  background-color: #c82333;
+}
+
+.update-button:hover {
+  background-color: #0056b3;
 }
 
 .header h2 {
@@ -46,6 +101,7 @@ html {
   margin: 0;
 }
 
+/* Search Container */
 .search-container {
   padding: 20px;
   background-color: white;
@@ -64,6 +120,7 @@ html {
   transition: all 0.3s ease;
 }
 
+/* Blocks Container */
 .blocks-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -71,79 +128,86 @@ html {
   padding: 20px;
   flex: 1;
   overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
+/* Block Styles */
 .block {
-  background-color: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   height: 100%;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.3s ease;
 }
 
 .block h3 {
+  font-size: 1rem;
   color: #2c3e50;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #eee;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
   text-align: center;
-  font-size: 1.3rem;
 }
 
+/* Bus Card Styles */
 .buses {
   display: grid;
-  gap: 15px;
+  gap: 8px;
   flex: 1;
 }
 
 .bus-card {
+  position: relative;
   background: white;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 10px;
+  border-radius: 6px;
   border: 1px solid #eee;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
+  min-height: 70px;
 }
 
 .bus-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .bus-card.empty {
   background-color: #f8f9fa;
-  border: 2px dashed #dee2e6;
+  border: 1px dashed #dee2e6;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 80px;
   color: #6c757d;
+  font-size: 0.8rem;
+  min-height: 70px;
 }
 
 .bus-number {
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #3498db;
-  margin-bottom: 5px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #007bff;
+  margin-bottom: 4px;
+  padding-right: 20px;
 }
 
 .bus-destination {
-  color: #2c3e50;
-  margin-bottom: 5px;
+  font-size: 0.85rem;
+  color: #495057;
+  margin-bottom: 4px;
 }
 
 .block-label {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: #6c757d;
   border-top: 1px solid #eee;
-  padding-top: 5px;
-  margin-top: 5px;
+  padding-top: 4px;
 }
 
-.logout-button, 
-.update-button {
+/* Logout Button */
+.logout-button {
   padding: 8px 16px;
   background-color: #dc3545;
   color: white;
@@ -152,19 +216,12 @@ html {
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.3s ease;
+  min-width: 80px;
+  max-width: 120px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-width: 80px; /* Reduced from 100px */
-  max-width: 120px; /* Added max-width */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.update-button {
-  background-color: #007bff;
-  width: fit-content; /* Adjust width to content */
-  min-width: 60px; /* Smaller min-width for update button */
 }
 
 .logout-button:hover {
@@ -173,53 +230,111 @@ html {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
-.update-button:hover {
-  background-color: #0056b3;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-}
-
-.logout-button:active,
-.update-button:active {
+.logout-button:active {
   transform: translateY(0);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive Design */
+/* Remove Bus Button */
+.remove-bus-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  padding: 0;
+  line-height: 1;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.bus-card:hover .remove-bus-btn {
+  opacity: 1;
+}
+
+.remove-bus-btn:hover {
+  background-color: #dc3545;
+  transform: scale(1.1);
+}
+
+/* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
-  .logout-button, 
-  .update-button {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    min-width: 60px; /* Further reduced for mobile */
-    max-width: 100px;
-    background-color: #dc3545;
+  .bus-yard {
+    background-color: #1a1a1a;
+  }
+
+  .header {
+    background-color: rgba(45, 45, 45, 0.9);
+  }
+
+  .header h2 {
     color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .logout-button,
+  .update-button {
+    background-color: #dc3545;
   }
 
   .update-button {
     background-color: #0056b3;
   }
 
-  .logout-button:hover {
-    background-color: #bd2130;
+  .search-container {
+    background-color: #2d2d2d;
   }
 
-  .update-button:hover {
-    background-color: #004494;
+  .search-input {
+    background-color: #333;
+    border-color: #404040;
+    color: #fff;
+  }
+
+  .block {
+    background-color: rgba(45, 45, 45, 0.9);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .block h3 {
+    color: #fff;
+    border-bottom-color: #404040;
+  }
+
+  .bus-card {
+    background-color: #333333;
+    border-color: #404040;
+  }
+
+  .bus-card.empty {
+    background-color: #2d2d2d;
+    border-color: #404040;
+    color: #888888;
+  }
+
+  .bus-number {
+    color: #5fa9ee;
+  }
+
+  .bus-destination {
+    color: #e0e0e0;
+  }
+
+  .block-label {
+    color: #888;
+    border-top-color: #404040;
   }
 }
 
-@media screen and (max-width: 768px) {
-  .logout-button, 
-  .update-button {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    min-width: 80px;
-  }
-}
-
+/* Responsive Design */
 @media screen and (min-width: 2000px) {
   .blocks-container {
     grid-template-columns: repeat(6, 1fr);
@@ -280,70 +395,12 @@ html {
   }
 
   .bus-card {
-    padding: 12px;
+    padding: 8px;
+    min-height: 65px;
   }
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .bus-yard {
-    background-color: #1a1a1a;
-  }
-
-  .header {
-    background-color: #2d2d2d;
-  }
-
-  .header h2 {
-    color: #fff;
-  }
-
-  .search-container {
-    background-color: #2d2d2d;
-  }
-
-  .block {
-    background-color: #2d2d2d;
-  }
-
-  .block h3 {
-    color: #fff;
-    border-bottom-color: #404040;
-  }
-
-  .bus-card {
-    background-color: #333;
-    border-color: #404040;
-  }
-
-  .bus-card.empty {
-    background-color: #2d2d2d;
-    border-color: #404040;
-    color: #888;
-  }
-
-  .bus-destination {
-    color: #e0e0e0;
-  }
-
-  .block-label {
-    color: #888;
-    border-top-color: #404040;
-  }
-
-  .search-input {
-    background-color: #333;
-    border-color: #404040;
-    color: #fff;
-  }
-}
-
-/* Smooth scrolling */
-.blocks-container {
-  scroll-behavior: smooth;
-}
-
-/* Loading animation */
+/* Loading Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -355,6 +412,12 @@ html {
   }
 }
 
-.block {
-  animation: fadeIn 0.3s ease-out forwards;
+@media screen and (max-width: 768px) {
+  .logout-button,
+  .update-button {
+    padding: 4px 6px;
+    font-size: 0.75rem;
+    min-width: 20px;
+    height: 28px;
+  }
 }
